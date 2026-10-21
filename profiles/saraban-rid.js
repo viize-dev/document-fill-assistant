@@ -23,6 +23,8 @@ export default {
   detect: ['#txtwid', '#txtwsubject'],
   // หน้า "ค้นหาหนังสือ" ใช้ id txtwid/txtfrom/txtto/txtwsubject ชุดเดียวกัน (สำรวจ 2026-10-21) ต้องไม่ถูกนับเป็นฟอร์มกรอก:
   // ฟอร์มกรอกมี ลงวันที่ (txtwdate) + ประเภทเอกสาร (selwtype) ส่วนหน้าค้นหามีช่วงวันที่ txtfdate
+  // คำเฉพาะงานชลประทานที่ OCR อ่านผิดซ้ำ (ฝั่ง = ั่ มักหลุดวรรณยุกต์)
+  ocrFixes: [['ฝังขวา', 'ฝั่งขวา'], ['ฝังซ้าย', 'ฝั่งซ้าย']],
   detectAll: ['#txtwdate', '#selwtype'],
   detectNot: ['#txtfdate'],
   fields: {

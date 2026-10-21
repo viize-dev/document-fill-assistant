@@ -68,6 +68,7 @@ test('extractLocal: PDF ภาพสแกน -> ใช้ OCR, ลดควา�
   assert.equal(r.fields.doc_no, '', 'เลขที่หนังสือที่เป็นขยะต้องเว้นว่าง');
   assert.ok(Object.values(r.field_confidence).every((c) => c <= 0.5), 'OCR: ทุกช่องมั่นใจไม่เกิน 50%');
   assert.match(r.warnings[0], /OCR/);
+  assert.ok(r.warnings.some((w) => /กรอกเอง/.test(w)), "ต้องเตือนเมื่อเลขที่/วันที่อ่านไม่ได้");
   assert.ok(progress.some((t) => /OCR/.test(t)));
   await assert.rejects(() => extractLocal({ data: new Uint8Array(readFileSync(new URL('../samples/s4-external-scan.pdf', import.meta.url))), profile, pdfjs, ocr: false }), /ภาพสแกน/, 'ปิด OCR = ข้อความเดิม');
 });
@@ -115,3 +116,14 @@ test('ocrPages: หน้าแรกเป็นภาพแนบ (ไม่�
   assert.equal(none.tried, 3, 'ไม่เจอเลย: ลองครบ maxPages');
 }
 );
+
+import { fixOcrText, fixOcrLines } from '../lib/local/ocr.js';
+
+test('แก้คำที่ OCR อ่านผิดซ้ำ: น้้า->น้ำ, พื่นที่->พื้นที่, คำเฉพาะงานจาก profile; คำที่ถูกอยู่แล้วไม่ถูกแตะ', () => {
+  assert.equal(fixOcrText('การจัดการน้้าของโครงการ'), 'การจัดการน้ำของโครงการ');
+  assert.equal(fixOcrText('ลงพื่นที่'), 'ลงพื้นที่');
+  assert.equal(fixOcrText('คลองชลประทานฝังขวา', [['ฝังขวา', 'ฝั่งขวา']]), 'คลองชลประทานฝั่งขวา');
+  assert.equal(fixOcrText('น้ำท่วม ฝั่งซ้าย พื้นที่'), 'น้ำท่วม ฝั่งซ้าย พื้นที่');
+  const [l] = fixOcrLines([{ segments: ['ก้้า', 'x'], text: 'ก้้า  x' }]);
+  assert.equal(l.text, 'ก้ำ  x');
+});
