@@ -1,0 +1,12 @@
+{
+  "name": "eval-tools",
+  "private": true,
+  "type": "module",
+  "description": "dev-only: pdf.js สำหรับสคริปต์วัดผลใน Node (ตัว extension ใช้ไฟล์ที่ vendor ไว้ที่ lib/vendor/pdfjs)",
+  "devDependencies": {
+    "@napi-rs/canvas": "^1.0.13",
+    "jsdom": "^26.1.0",
+    "pdfjs-dist": "^6.4.299",
+    "tesseract.js": "^6.0.1"
+  }
+}
