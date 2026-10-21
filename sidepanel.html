@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Document Fill Assistant</title>
+  <link rel="icon" href="icons/icon-32.png">
+  <link rel="stylesheet" href="sidepanel.css">
+</head>
+<body>
+  <header class="head">
+    <h1><img src="icons/icon-32.png" alt="" class="logo" width="24" height="24"> Document Fill Assistant</h1>
+    <span id="page-status" class="chip chip-off">กำลังตรวจหน้า…</span>
+  </header>
+
+  <div class="target">
+    <label>ระบบปลายทาง <select id="profile"></select></label>
+    <button id="grant" class="btn" hidden>อนุญาตให้ใช้กับเว็บนี้</button>
+  </div>
+
+  <section class="card" id="disc" hidden>
+    <details open>
+      <summary><b>ช่องที่ตรวจพบในหน้านี้</b> <span id="disc-summary" class="small muted"></span></summary>
+      <div id="disc-warn" class="report bad" hidden></div>
+      <div id="disc-body"></div>
+      <div class="row">
+        <button id="disc-rescan" class="btn" type="button">สแกนใหม่</button>
+        <button id="disc-remember" class="btn" type="button">จำการจับคู่หน้านี้</button>
+      </div>
+      <p class="small muted">ส่วนนี้ซ่อนไว้สำหรับนักพัฒนา (เปิดด้วย chrome.storage.local.debugDiscovery = true) ผู้ใช้ทั่วไปไม่ต้องตรวจจับเอง</p>
+    </details>
+  </section>
+
+  <div id="org-bar" class="org-bar" hidden>
+    <span id="org-status" class="small"></span>
+    <span id="org-buttons" class="row"></span>
+  </div>
+
+  <section class="card">
+    <h2>1. นำเอกสารเข้า</h2>
+    <div class="tabs" role="tablist">
+      <button class="tab active" data-tab="upload">Upload</button>
+      <button class="tab" data-tab="gmail">Gmail</button>
+      <button class="tab" data-tab="drive">Drive</button>
+      <button class="tab" data-tab="msmail">Outlook</button>
+      <button class="tab" data-tab="msdrive">OneDrive</button>
+      <button class="tab" data-tab="folder">โฟลเดอร์</button>
+    </div>
+
+    <div id="pane-upload" class="pane">
+      <label id="dropzone" class="dropzone">
+        <input id="file-input" type="file" accept="application/pdf" hidden>
+        ลากไฟล์ PDF มาวาง หรือคลิกเพื่อเลือก
+      </label>
+    </div>
+
+    <div id="pane-gmail" class="pane" hidden><div class="src" data-source="gmail"></div></div>
+    <div id="pane-drive" class="pane" hidden><div class="src" data-source="drive"></div></div>
+    <div id="pane-msmail" class="pane" hidden><div class="src" data-source="msmail"></div></div>
+    <div id="pane-msdrive" class="pane" hidden><div class="src" data-source="msdrive"></div></div>
+    <div id="pane-folder" class="pane" hidden><div class="src" data-source="folder"></div></div>
+  </section>
+
+  <section class="card" id="preview-card" hidden>
+    <h2>ไฟล์ที่เลือก <span id="file-name" class="muted"></span></h2>
+    <iframe id="preview" title="PDF preview"></iframe>
+    <div class="row">
+      <a id="open-pdf" href="#" target="_blank" class="link">เปิด PDF ในแท็บใหม่</a>
+      <span class="spacer"></span>
+      <button id="analyze" class="btn btn-primary">วิเคราะห์เอกสาร</button>
+    </div>
+  </section>
+
+  <div id="status" class="status" hidden></div>
+
+  <section class="card" id="result-card" hidden>
+    <h2>2. ตรวจข้อมูลที่ดึงได้</h2>
+    <label class="type-row">
+      ประเภทเอกสาร
+      <select id="doc-type"></select>
+    </label>
+    <p id="type-hint" class="muted small"></p>
+    <div id="result-warn" class="warn" hidden></div>
+    <div id="rows" class="rows"></div>
+    <div class="row">
+      <button id="fill" class="btn btn-primary" disabled>กรอกฟอร์ม</button>
+      <button id="cover" class="btn">ใบปะหน้า</button>
+    </div>
+    <p class="muted small">ระบบจะกรอกให้เท่านั้น ไม่กดปุ่มบันทึก/ส่งให้ ผู้ใช้ตรวจและกดเองทุกครั้ง</p>
+    <div id="fill-report" class="report" hidden></div>
+  </section>
+
+  <details class="card" id="settings">
+    <summary>ตั้งค่าการอ่านเอกสาร (OCR)</summary>
+
+    <!-- ตัวเลือก login (โหมดองค์กร) ซ่อนไว้: เวอร์ชันนี้ใช้ API key อย่างเดียว เอา hidden ออกเพื่อเปิดกลับ -->
+    <fieldset class="method" hidden>
+      <legend>วิธีเชื่อมต่อ AI</legend>
+      <label><input type="radio" name="method" value="login"> เข้าสู่ระบบด้วยบัญชี <span class="muted small">(ไม่ต้องมี API key)</span></label>
+      <label><input type="radio" name="method" value="key"> ใช้ API key ของตัวเอง</label>
+    </fieldset>
+
+    <label class="field" id="provider-field">ผู้ให้บริการ AI
+      <select id="provider"></select>
+    </label>
+
+    <div id="backend-box" hidden>
+      <label class="field" id="backend-url-field">ที่อยู่ระบบขององค์กร (URL)
+        <input id="backend-url" type="text" placeholder="https://docfill.example.go.th" autocomplete="off">
+      </label>
+      <div id="login-area" class="login-area">
+        <div id="login-buttons" class="row"></div>
+        <div id="login-status" class="small"></div>
+        <button id="logout" class="btn" hidden>ออกจากระบบ</button>
+      </div>
+      <p class="muted small">เข้าสู่ระบบด้วยบัญชีองค์กร (Google Workspace / Microsoft 365) หน่วยงานเป็นผู้ดูแล key และค่าใช้จ่ายของ AI เอกสารจะถูกส่งผ่านระบบขององค์กรไปยังผู้ให้บริการ AI ที่หน่วยงานเลือก</p>
+      <p class="muted small" id="personal-login-note">ยังไม่รองรับการ login ด้วยบัญชีส่วนตัวของ ChatGPT / Claude / Gemini เพราะแพ็กเกจรายเดือนของแอปเหล่านั้นไม่เปิดให้แอปอื่นใช้ (Claude ห้ามโดยเงื่อนไข) หากไม่มีระบบขององค์กร ให้เลือก "ใช้ API key ของตัวเอง"</p>
+    </div>
+
+    <label class="field" id="key-field">API key
+      <input id="api-key" type="password" autocomplete="off">
+    </label>
+
+    <details class="help" id="key-help">
+      <summary>ยังไม่มี API key? ดูวิธีขอ</summary>
+      <ol id="setup-steps"></ol>
+      <a id="setup-link" href="#" target="_blank" rel="noreferrer" class="link">เปิดหน้าสมัคร/สร้างคีย์</a>
+      <p class="muted small">API key คือรหัสที่ใช้เรียก AI คิดค่าใช้จ่ายตามการใช้งานจริง แยกจากแพ็กเกจรายเดือนของแอปแชต</p>
+    </details>
+
+    <div id="local-note" class="local-note" hidden>
+      <p><b>ไม่ใช้ AI</b> อ่านข้อความที่อยู่ในไฟล์ PDF แล้วแยกฟิลด์ด้วยกฎ ข้อมูลไม่ออกจากเครื่อง ไม่ต้องมี key และไม่มีค่าใช้จ่าย</p>
+      <ul>
+        <li>PDF ที่มีข้อความในไฟล์ (เช่น ส่งออกจากระบบสารบรรณ/Word) อ่านได้แม่นที่สุด ส่วน <b>ภาพสแกน</b> อ่านด้วย OCR ในเครื่อง (ช้ากว่า ~5–10 วินาที ใช้หน้าแรกเท่านั้น) <b>เลขที่หนังสือ วันที่ ตราประทับ ลายมือ มักผิด ต้องตรวจเสมอ</b></li>
+        <li>แม่นยำกับหนังสือราชการรูปแบบมาตรฐาน แต่ผิดได้เมื่อรูปแบบต่างไป ระบบจะไฮไลต์ช่องที่ไม่แน่ใจ ผู้ใช้ต้องตรวจก่อนกรอก</li>
+        <li>สรุปเรื่องสำหรับใบปะหน้าทำไม่ได้ (ใช้ข้อความต้นฉบับท่อนแรกแทน)</li>
+      </ul>
+    </div>
+
+    <div class="row" id="test-row">
+      <button id="test-key" class="btn">ทดสอบและโหลดรายการโมเดล</button>
+      <span id="test-result" class="small"></span>
+    </div>
+
+    <label class="field" id="model-field">โมเดล
+      <select id="model"></select>
+    </label>
+    <p id="model-note" class="muted small"></p>
+
+    <label class="field">ชื่อหน่วยที่หัวใบปะหน้า
+      <input id="cover-unit" type="text" autocomplete="off">
+    </label>
+
+    <p class="muted small" id="privacy-note">key เก็บในเครื่องนี้เท่านั้น (chrome.storage.local) เอกสารที่วิเคราะห์จะถูกส่งไปยังผู้ให้บริการที่เลือก ตรวจนโยบายข้อมูลของหน่วยงานก่อนใช้กับเอกสารจริง</p>
+    <div class="row">
+      <button id="save-settings" class="btn btn-primary">บันทึก</button>
+      <span id="saved" class="muted small"></span>
+    </div>
+  </details>
+
+  <script type="module" src="sidepanel.js"></script>
+</body>
+</html>

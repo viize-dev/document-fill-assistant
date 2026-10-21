@@ -1,0 +1,10 @@
+{
+  "type": "object",
+  "properties": {
+    "backendUrl": {
+      "title": "ที่อยู่ backend ขององค์กร",
+      "description": "ตั้งแล้ว extension จะทำงานโหมดองค์กร: ผู้ใช้ login ด้วยบัญชีองค์กร ไม่ต้องกรอก API key (admin ตั้งที่หลังบ้าน) เช่น https://docfill.example.go.th",
+      "type": "string"
+    }
+  }
+}
