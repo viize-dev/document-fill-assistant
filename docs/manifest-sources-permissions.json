@@ -1,0 +1,16 @@
+{
+  "oauth2": {
+    "client_id": "774312849574-9s9kl8n3dr7fjmpu5go0670ct355avaq.apps.googleusercontent.com",
+    "scopes": [
+      "https://www.googleapis.com/auth/gmail.readonly",
+      "https://www.googleapis.com/auth/drive.readonly"
+    ]
+  },
+  "host_permissions": [
+    "https://gmail.googleapis.com/*",
+    "https://www.googleapis.com/*",
+    "https://oauth2.googleapis.com/*",
+    "https://graph.microsoft.com/*",
+    "https://login.microsoftonline.com/*"
+  ]
+}
