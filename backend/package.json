@@ -1,0 +1,20 @@
+{
+  "name": "doc-fill-backend",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22.13"
+  },
+  "scripts": {
+    "start": "node --disable-warning=ExperimentalWarning src/index.js",
+    "dev": "node --disable-warning=ExperimentalWarning --watch src/index.js",
+    "test": "node --disable-warning=ExperimentalWarning --test \"test/*.test.js\"",
+    "admin:set": "node --disable-warning=ExperimentalWarning src/cli.js admin:set",
+    "admin:show": "node --disable-warning=ExperimentalWarning src/cli.js admin:show"
+  },
+  "dependencies": {
+    "@hono/node-server": "^2.1.5",
+    "hono": "^4.13.13"
+  }
+}

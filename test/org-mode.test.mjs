@@ -46,8 +46,8 @@ test('เซสชันถูกเพิกถอน (401) -> ข้อคว�
 });
 
 test('prompt ฝั่ง extension และ backend ต้องเหมือนกัน (ถ้ามี backend อยู่ข้างๆ)', async (t) => {
-  const backendDir = new URL('../../doc-fill-backend/', import.meta.url);
-  if (!existsSync(new URL('src/prompt.js', backendDir))) return t.skip('ไม่พบ ../doc-fill-backend');
+  const backendDir = new URL('../backend/', import.meta.url);
+  if (!existsSync(new URL('src/prompt.js', backendDir))) return t.skip('ไม่พบ backend/');
   const { buildPrompt: serverPrompt } = await import(new URL('src/prompt.js', backendDir));
   const { default: exported } = await import('node:fs').then((fs) => ({ default: JSON.parse(fs.readFileSync(new URL('profiles/saraban-demo.json', backendDir), 'utf8')) }));
   for (const opts of [{ summary: true }, { summary: false }]) {

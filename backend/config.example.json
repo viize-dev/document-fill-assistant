@@ -1,0 +1,77 @@
+{
+  "name": "Document Fill Assistant",
+  "port": 8787,
+  "dbPath": "./data/usage.db",
+  "corsOrigins": [
+    "chrome-extension://<EXTENSION_ID>"
+  ],
+  "devAuth": false,
+  "oidc": [
+    {
+      "id": "google",
+      "label": "Google Workspace",
+      "issuer": "https://accounts.google.com",
+      "jwksUri": "https://www.googleapis.com/oauth2/v3/certs",
+      "authUrl": "https://accounts.google.com/o/oauth2/v2/auth",
+      "clientId": "<GOOGLE_CLIENT_ID>.apps.googleusercontent.com",
+      "allowedDomains": [
+        "example.go.th"
+      ],
+      "allowedEmails": [],
+      "tokenUrl": "https://oauth2.googleapis.com/token",
+      "clientSecretEnv": "GOOGLE_CLIENT_SECRET"
+    },
+    {
+      "id": "microsoft",
+      "label": "Microsoft 365",
+      "issuer": "https://login.microsoftonline.com/<TENANT_ID>/v2.0",
+      "jwksUri": "https://login.microsoftonline.com/<TENANT_ID>/discovery/v2.0/keys",
+      "authUrl": "https://login.microsoftonline.com/<TENANT_ID>/oauth2/v2.0/authorize",
+      "clientId": "<APP_CLIENT_ID>",
+      "allowedDomains": [
+        "example.go.th"
+      ],
+      "allowedEmails": [],
+      "tokenUrl": "https://login.microsoftonline.com/<TENANT_ID>/oauth2/v2.0/token",
+      "clientSecretEnv": "MICROSOFT_CLIENT_SECRET"
+    }
+  ],
+  "upstream": {
+    "provider": "anthropic",
+    "defaultModel": "claude-sonnet-5-5",
+    "models": [
+      {
+        "id": "claude-haiku-5-5",
+        "label": "Haiku 5.5",
+        "note": "เร็ว ประหยัด"
+      },
+      {
+        "id": "claude-sonnet-5-5",
+        "label": "Sonnet 5.5",
+        "note": "สมดุล (แนะนำ)"
+      },
+      {
+        "id": "claude-opus-5-5",
+        "label": "Opus 5.5",
+        "note": "แม่นยำสูง"
+      }
+    ]
+  },
+  "limits": {
+    "monthlyRequestsPerUser": 200,
+    "requestsPerMinutePerUser": 10,
+    "maxPdfBytes": 15000000,
+    "maxPromptChars": 20000,
+    "sessionHours": 8
+  },
+  "adminEmail": "admin@example.go.th",
+  "publicUrl": "https://docfill.example.go.th",
+  "adminLogin": {
+    "provider": "google"
+  },
+  "allowClientPrompt": false,
+  "features": {
+    "summary": true
+  },
+  "profilesDir": "./profiles"
+}

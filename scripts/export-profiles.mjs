@@ -1,5 +1,5 @@
-// ส่งออก profile เป็น JSON ให้ backend (doc-fill-backend) ใช้สร้าง prompt ฝั่งเซิร์ฟเวอร์
-// ใช้: node scripts/export-profiles.mjs ../doc-fill-backend/profiles
+// ส่งออก profile เป็น JSON ให้ backend (backend/) ใช้สร้าง prompt ฝั่งเซิร์ฟเวอร์
+// ใช้: node scripts/export-profiles.mjs backend/profiles
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { PROFILES } from '../profiles/index.js';

@@ -1,0 +1,193 @@
+{
+  "id": "saraban-rid",
+  "name": "Saraban กรมชลประทาน (saraban.rid.go.th)",
+  "documentKind": "หนังสือราชการภาษาไทย (อาจเป็นภาพสแกน มีลายมือ ตราประทับ)",
+  "docTypes": {
+    "external": {
+      "label": "หนังสือภายนอก",
+      "ask": "หนังสือภายนอก (มีตราครุฑ, \"ที่ ...\")",
+      "fields": [
+        "doc_no",
+        "e_no",
+        "doc_date",
+        "from",
+        "to",
+        "subject",
+        "ref",
+        "attachments",
+        "speed",
+        "secret",
+        "detail",
+        "summary",
+        "closing",
+        "deadline"
+      ]
+    },
+    "internal": {
+      "label": "บันทึกข้อความ",
+      "ask": "บันทึกข้อความ",
+      "fields": [
+        "doc_no",
+        "e_no",
+        "doc_date",
+        "from",
+        "to",
+        "subject",
+        "ref",
+        "speed",
+        "secret",
+        "detail",
+        "summary",
+        "closing",
+        "deadline"
+      ]
+    },
+    "circular": {
+      "label": "หนังสือเวียน",
+      "ask": "หนังสือเวียน",
+      "fields": [
+        "doc_no",
+        "e_no",
+        "doc_date",
+        "from",
+        "to",
+        "subject",
+        "ref",
+        "attachments",
+        "speed",
+        "secret",
+        "detail",
+        "summary",
+        "closing",
+        "deadline"
+      ]
+    },
+    "other": {
+      "label": "อื่นๆ",
+      "ask": "เอกสารอื่นที่ไม่เข้าประเภทข้างต้น",
+      "fields": [
+        "doc_no",
+        "e_no",
+        "doc_date",
+        "from",
+        "to",
+        "subject",
+        "speed",
+        "secret",
+        "detail",
+        "summary",
+        "closing",
+        "deadline"
+      ]
+    }
+  },
+  "fields": {
+    "doc_no": {
+      "label": "เลขที่เอกสาร",
+      "kind": "text",
+      "ask": "เลขที่หนังสือ เช่น ศธ 0100/7143 (ไม่ใช่เลขรับที่ประทับหรือเขียนด้วยลายมือ)"
+    },
+    "doc_date": {
+      "label": "ลงวันที่",
+      "kind": "date",
+      "ask": "วันที่ของหนังสือ รูปแบบ dd/mm/yyyy ตามปีที่ปรากฏในเอกสาร"
+    },
+    "e_no": {
+      "label": "เลขที่เอกสารในระบบ E",
+      "kind": "text",
+      "ask": "เลขในตราประทับ \"เลขที่เอกสารในระบบ E <รหัส>\" ใส่เฉพาะรหัสหลังตัว E เช่น กษ0100/7562 (ไม่ใช่เลขที่หนังสือ ที่ ...) ถ้าไม่มีตราประทับนี้ให้เป็นสตริงว่าง"
+    },
+    "summary": {
+      "label": "สรุปเรื่อง (ใบปะหน้า)",
+      "kind": "textarea",
+      "fromSummary": true
+    },
+    "closing": {
+      "label": "ประโยคปิดท้าย",
+      "kind": "text",
+      "ask": "ประโยคปิดท้ายเนื้อหา เช่น \"จึงเรียนมาเพื่อโปรดพิจารณาดำเนินการต่อไป\" ถ้าไม่มีให้เป็นสตริงว่าง"
+    },
+    "deadline": {
+      "label": "วันที่กำหนด",
+      "kind": "date",
+      "ask": "วันที่กำหนดให้ดำเนินการ/ตอบกลับที่ระบุในเอกสาร (เช่น ช่อง \"วันที่กำหนด\") รูปแบบ dd/mm/yyyy ถ้าไม่มีให้เป็นสตริงว่าง"
+    },
+    "from": {
+      "label": "จาก",
+      "kind": "text",
+      "ask": "ส่วนราชการ/หน่วยงานเจ้าของเรื่อง"
+    },
+    "to": {
+      "label": "ถึง",
+      "kind": "text",
+      "ask": "ผู้รับ (บรรทัด เรียน)"
+    },
+    "subject": {
+      "label": "เรื่อง",
+      "kind": "textarea",
+      "ask": "เรื่อง"
+    },
+    "detail": {
+      "label": "รายละเอียด",
+      "kind": "textarea",
+      "ask": "สรุปเนื้อหาสำคัญ 2-4 ประโยค",
+      "fromSummary": true
+    },
+    "ref": {
+      "label": "อ้างถึง",
+      "kind": "text",
+      "ask": "อ้างถึง (ถ้าไม่มีให้เป็นสตริงว่าง)"
+    },
+    "attachments": {
+      "label": "สิ่งที่ส่งมาด้วย",
+      "kind": "text",
+      "ask": "สิ่งที่ส่งมาด้วย (ถ้าไม่มีให้เป็นสตริงว่าง)"
+    },
+    "speed": {
+      "label": "ชั้นความเร็ว",
+      "kind": "select",
+      "ask": "ชั้นความเร็วตามตราประทับ (ด่วนที่สุด/ด่วนมาก/ด่วน) ถ้าไม่มีให้ normal",
+      "options": [
+        [
+          "normal",
+          "ปกติ"
+        ],
+        [
+          "urgent",
+          "ด่วน"
+        ],
+        [
+          "very_urgent",
+          "ด่วนมาก"
+        ],
+        [
+          "most_urgent",
+          "ด่วนที่สุด"
+        ]
+      ]
+    },
+    "secret": {
+      "label": "ชั้นความลับ",
+      "kind": "select",
+      "ask": "ชั้นความลับตามตราประทับ ถ้าไม่มีให้ normal",
+      "options": [
+        [
+          "normal",
+          "ปกติ"
+        ],
+        [
+          "secret",
+          "ลับ"
+        ],
+        [
+          "very_secret",
+          "ลับมาก"
+        ],
+        [
+          "most_secret",
+          "ลับที่สุด"
+        ]
+      ]
+    }
+  }
+}

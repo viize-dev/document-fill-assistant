@@ -75,7 +75,7 @@ Profile เป็น JSON-serializable ตั้งใจให้โหลด�
 
 เวอร์ชันนี้ใช้ **API key อย่างเดียว** เหตุผล: Anthropic ห้ามแอปอื่นใช้ token ของแพ็กเกจ Claude, Google ไม่มีวิธีทางการให้ใช้ subscription Gemini ในแอปอื่น, และ "Sign in with ChatGPT" ยังเปิดเฉพาะ partner ที่ OpenAI คัดเลือก (ถ้าได้รับอนุมัติค่อยเพิ่ม)
 
-โหมดองค์กร (login ผ่าน `../doc-fill-backend`) ยังมีโค้ดอยู่แต่ซ่อนไว้ใน UI (`fieldset.method[hidden]` ใน `sidepanel.html`)
+โหมดองค์กร (login ผ่าน `backend/`) ยังมีโค้ดอยู่แต่ซ่อนไว้ใน UI (`fieldset.method[hidden]` ใน `sidepanel.html`)
 
 | ผู้ให้บริการ | การเชื่อมต่อปัจจุบัน |
 |---|---|
@@ -110,11 +110,11 @@ Profile เป็น JSON-serializable ตั้งใจให้โหลด�
 
 ## โหมดองค์กร (admin ตั้งค่า API key ที่หลังบ้าน)
 
-สำหรับลูกค้าองค์กร: ผู้ใช้ **ไม่เห็นและไม่ต้องกรอก API key** — login ด้วยบัญชีองค์กรแล้วใช้งาน admin คนเดียวตั้ง key/โมเดล/โควต้าที่หน้า `/admin` ของ backend (`../doc-fill-backend`)
+สำหรับลูกค้าองค์กร: ผู้ใช้ **ไม่เห็นและไม่ต้องกรอก API key** — login ด้วยบัญชีองค์กรแล้วใช้งาน admin คนเดียวตั้ง key/โมเดล/โควต้าที่หน้า `/admin` ของ backend (`backend/`)
 
 - เปิดโหมดนี้โดยตั้ง URL ของ backend ได้ 2 ทาง: **นโยบายองค์กรของ Chrome** (`chrome.storage.managed`, schema ใน `managed_schema.json`, คีย์ `backendUrl`) หรือค่าตอน build ใน `lib/deploy.js` (`DEPLOY.backendUrl`) ไม่ตั้ง = โหมดเดิม (ผู้ใช้ใส่ key เอง/โหมดในเครื่อง)
 - ในโหมดองค์กร: ส่วนตั้งค่าซ่อนผู้ให้บริการ/key/โมเดลทั้งหมด แถบด้านบนแสดงปุ่ม login ผู้ใช้ส่งเฉพาะ PDF + `profile_id` ให้ backend สร้าง prompt เอง (ผู้ใช้กำหนดข้อความที่ส่งให้ AI ไม่ได้) ไม่มีโหมดในเครื่องในโหมดนี้
-- ซิงก์ profile ไป backend: `node scripts/export-profiles.mjs ../doc-fill-backend/profiles` (ทุกครั้งที่แก้ `profiles/*.js` หรือ `lib/prompt.js` — เทสต์ `test/org-mode.test.mjs` จะเตือนถ้าสองฝั่งไม่ตรงกัน)
+- ซิงก์ profile ไป backend: `node scripts/export-profiles.mjs backend/profiles` (ทุกครั้งที่แก้ `profiles/*.js` หรือ `lib/prompt.js` — เทสต์ `test/org-mode.test.mjs` จะเตือนถ้าสองฝั่งไม่ตรงกัน)
 - ⚠ ทดสอบแล้วด้วย backend จำลอง/เบราว์เซอร์จำลอง (login ผ่าน IdP จริงของ extension และ admin ยังไม่ได้ทดสอบ)
 
 ## สรุปเรื่องและใบปะหน้า
